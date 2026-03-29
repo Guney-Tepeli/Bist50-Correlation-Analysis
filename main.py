@@ -30,3 +30,9 @@ for stock in stocks:
         daily_differences.loc[i, stock] = data[stock].iloc[i] - data[stock].iloc[i-1]
 covariance_matrix = daily_differences.cov()
 correlation_matrix = daily_differences.corr() 
+
+top10_corr = correlation_matrix.unstack().sort_values(ascending=False).drop_duplicates()
+top10_corr = top10_corr[top10_corr != 1]
+top10_corr = top10_corr.sort_values(ascending=False).head(10).reset_index()
+top10_corr.columns = ["Stock1", "Stock2", "Correlation"]
+top10_corr["Pairs"] = top10_corr["Stock1"] + " - " + top10_corr["Stock2"]
